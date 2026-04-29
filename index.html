@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Cafetería Asíncrona</title>
+    <style>
+        :root {
+            --coffee: #6f4e37;
+            --cream: #f5f5f5;
+            --success: #2ecc71;
+            --process: #f39c12;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e0d7d1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgb(237, 216, 228);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 { color: var(--coffee); text-align: center; }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none ;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: var(--coffee);
+            color: white;
+            font-weight: bold;
+            transition: transform 0.1s;
+        }
+
+        button:active { transform: scale(0.95); }
+
+        .order-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status.en-proceso { background: #fff3cd; color: #856404; }
+        .status.completado { background: #d4edda; color: #155724; }
+
+        .log {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #666;
+            max-height: 100px;
+            overflow-y: auto;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>☕ Coffee Lab JS</h1>
+    
+    <div class="controls">
+        <button onclick="nuevoPedido('Espresso')">☕ Espresso</button>
+        <button onclick="nuevoPedido('Latte')">🥛 Latte</button>
+        <button onclick="nuevoPedido('Capuchino')">✨ Capuchino</button>
+    </div>
+
+    <ul id="listaPedidos" class="order-list">
+        <!-- Los pedidos aparecerán aquí -->
+    </ul>
+
+    <div id="log" class="log">Sistema listo para recibir pedidos...</div>
+</div>
+
+<script>
+    let contadorPedidos = 0;
+
+    // 1. Simulación de preparación asincrónica (Promesa)
+    function prepararBebida(nombre, tiempo) {
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(`Tu ${nombre} está listo`);
+            }, tiempo);
+        });
+    }
+
+    // 2. Función principal (Async/Await)
+    async function nuevoPedido(nombreBebida) {
+        contadorPedidos++;
+        const id = contadorPedidos;
+        const tiempoPreparacion = Math.floor(Math.random() * 3000) + 2000; // 2-5 segundos
+
+        // Añadir a la interfaz visual
+        const lista = document.getElementById('listaPedidos');
+        const item = document.createElement('li');
+        item.className = 'order-item';
+        item.id = `pedido-${id}`;
+        item.innerHTML = `
+            <span><strong>#${id}</strong> ${nombreBebida}</span>
+            <span class="status en-proceso" id="status-${id}">⏳ Preparando...</span>
+        `;
+        lista.prepend(item); // Poner el más nuevo arriba
+
+        escribirLog(`Iniciando preparación de ${nombreBebida} (ID: ${id})...`);
+
+        // ESPERAR a la preparación sin bloquear el resto de la interfaz
+        await prepararBebida(nombreBebida, tiempoPreparacion);
+
+        // Actualizar estado al terminar
+        actualizarEstado(id);
+        escribirLog(`✅ Pedido #${id} finalizado.`);
+    }
+
+    function actualizarEstado(id) {
+        const statusBadge = document.getElementById(`status-${id}`);
+        if (statusBadge) {
+            statusBadge.innerText = '✅ Completado';
+            statusBadge.className = 'status completado';
+        }
+    }
+
+    function escribirLog(mensaje) {
+        const log = document.getElementById('log');
+        log.innerHTML = `> ${mensaje}<br>` + log.innerHTML;
+    }
+</script>
+
+</body>
+</html>
