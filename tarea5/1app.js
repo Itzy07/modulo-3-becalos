@@ -12,7 +12,7 @@ const horario = document.querySelector('input[name="horario"]:checked')?.value |
 /*?.value:El ?. se llama Optional Chaining. Sirve para que, si el usuario no ha marcado nada, 
 el código no "explote" (no marque error) y simplemente devuelva que no hay nada.
  El .value saca el texto (ej. "tarde").
-|| "":Es un plan de respaldo. 
+|| "":Es un plan de respaldo. s
 Si todo lo anterior es nulo (nadie hizo clic en nada), guarda un texto vacío "" en lugar de un error.
  */
 const hora= document.getElementById('hora').value;
