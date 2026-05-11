@@ -1,0 +1,14 @@
+{
+  "name": "tarea7",
+  "version": "1.0.0",
+  "description": "",
+  "main": "planetas.js",
+
+  "scripts": {
+  "explorar": "node index.js"
+   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
