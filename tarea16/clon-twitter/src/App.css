@@ -1,0 +1,52 @@
+/* Estilos para la barra de navegación superior */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  background-color: #74c7e6; /* Azul Twitter */
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor de los enlaces izquierdos */
+.nav-links {
+  display: flex;
+  gap: 25px;
+}
+
+/* Enlaces comunes (Home y Profile) */
+.link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* Botón/Enlace de Login */
+.login-link {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  background-color: #14171a;
+  padding: 8px 18px;
+  border-radius: 20px;
+}
+
+/* Botón de Logout */
+.logout-btn {
+  background-color: #e0245e; /* Rojo sutil */
+  color: white;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #bd1c4c;
+}
